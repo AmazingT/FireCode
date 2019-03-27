@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CSS3 常见的布局方式</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* flex布局(display: flex) => 2012年的语法，也是以后的标准语法，替代display: box(实际不能完全替代)
+         * 容器属性：flex-direction/flex-wrap/(flex-flow)/justify-content/align-items/align-content
+         * flex-direction: row(默认)|row-reverse|column|column-reverse
+         * flex-wrap: nowrap|wrap|wrap-reverse(第一行在下方)
+         * flex-flow: <flex-direction> || <flex-wrap>
+         * justify-content: flex-start|flex-end|center|space-between(两端对齐,项目之间的间隔相等)|space-around(每个项目两侧的间隔都相等)
+         * align-items: flex-start|flex-end|center|baseline|streth(默认)
+         * align-content(多根轴线的对齐方式): flex-start|flex-end|center|space-between|space-around|streth(默认)
+         * 项目属性：
+         * order: <integer>.定义项目排列顺序 越小越靠前。默认为0
+         * flex-grow: 项目放大比列，默认为0，即存在剩余空间，也不放大 <number>
+         * flex-shrink: 项目缩小比例，默认为1，即空间不足，项目缩小 <number>
+         * flex-basis: 项目占据的主轴空间，默认为auto，即项目本来大小 <length> | auto
+         * flex: (flex-grow/shrink/basis)默认为 0 1 auto，auto(1 1 auto) none(0 0 auto) 
+         * align-self: 允许单个项目和其他项目不一样的对齐方式 auto|flex-start|flex-end|center|baseline|stretch
+         */
+
+        /* box布局(display: box) => 2009年的语法
+         * box-orient: horizontal|vertical|inherit 子元素排列方式(flex-direction)
+         * box-pack: start|end|center|jusify 子元素水平对齐方式(justify-content)
+         * box-align: start|end|center|baseline|stretch 子元素垂直方向排列方式(align-items)
+         * box-flex: 0 | <number> 
+         */
+
+        /*
+         * Android UC浏览器只支持display: box语法。而iOS UC浏览器则支持两种方式
+         */
+
+        /* Grid 布局 二维空间 */
+        .content {/* grid container */
+            display: grid;
+            /* 划分列 fr: 分数 替代百分比避免多位小数 三列等宽repeat(3, 1fr) */
+            grid-template-columns: repeat(4, 1fr);/*10% 20% 30% 40%;*/
+            /* grid-template-rows: repeat(4, 60px);高度60px */
+            /* grid-template-rows: repeat(3, minmax(60px, auto)); */
+            /* 划分行 minmax: 最小高度和最大高度(auto 自适应) */
+            grid-auto-rows: minmax(100px, auto);
+            grid-template-areas: 
+            "header header header header"
+            "aside . main main"
+            "nav . main main"
+            "section section section section"
+            "section section section section"
+            "footer footer footer footer";
+            /* 行和列之间的间隔 */
+            grid-gap: 10px; /*行列间隔*/
+            max-width: 960px;
+            margin: 0 auto;
+            color: #fff;
+            text-align: center;
+        }
+
+        header { grid-area: header; }
+        main   { grid-area: main; }
+        section{ grid-area: section; }
+        aside  { grid-area: aside; }
+        nav    { grid-area: nav; }
+        footer { grid-area: footer; }
+
+        .content > * {
+            padding: 30px;
+            background: #3bbced;
+        }
+        
+        .content div {/* grid item */
+            padding: 30px;
+            background: rgb(172, 171, 171);
+        }
+
+        .content div:nth-child(even) {
+            background: rgb(113, 156, 250);
+        }
+
+        /* grid line */
+        .box {
+            display: grid;
+            grid-template-columns: repeat(8, 100px);
+            grid-template-rows: repeat(8, 100px);
+            grid-gap: 10px;
+            /* 与flex类似 grid可以设置justify和align来调整grid item横向和纵向对齐方式 */
+            /* align-items: start;
+            justify-items: end; */
+        }
+
+        .box .block {
+            /* grid-column-start: 3;
+            grid-column-end: 6;
+            grid-row-start: 3;
+            grid-row-end: 6; */
+
+            /* grid-column: 3 / 6;
+            grid-row: 3 / 6; */
+
+            /* grid-area: 3 / 3 / 6 / 6; */
+
+            /* 起始默认，只设置跨度 */
+            grid-column: span 3;
+            grid-row: span 3;
+
+            border: 1px dashed #000;
+        }
+
+        /* 
+         * 多列布局(IE10及以上 其他需要前缀)
+         * column-count 分隔列数
+         * column-gap 列之间的间隔
+         * column-rule 列之间的宽度、样式和颜色规则
+         */
+        .container {
+            column-count: 3;
+            column-gap: 40px;
+            column-rule: 2px solid red;
+            -webkit-column-count: 3;
+            -webkit-column-gap: 40px;
+            -webkit-column-rule: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- flex/box 布局 -->
+
+    <!-- Grid 布局 -->
+    <div class="content">
+        <header>Header</header>
+        <main>Main</main>
+        <section>Section</section>
+        <aside>Aside</aside>
+        <nav>Nav</nav>
+        <footer>Footer</footer>
+    </div>
+
+    <div class="box">
+        <div class="block"></div>
+    </div>
+
+    <!-- 多列布局 -->
+    <div class="container">
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus pariatur odio ipsam at dolore, autem minima ab voluptatibus aperiam. Odio facilis consequatur iste aliquam, aut quidem optio voluptas neque consectetur.</div>
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, quis inventore nihil tenetur maiores qui corporis exercitationem cum dolor, facilis reiciendis possimus magnam libero quo rem omnis recusandae distinctio consequatur?</div>
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium alias incidunt quasi deleniti atque expedita fuga nostrum dolorum vero molestiae architecto, in ipsam omnis voluptates facilis. Ea repellendus saepe libero.</div>
+    </div>
+</body>
+</html>
